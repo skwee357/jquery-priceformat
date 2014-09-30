@@ -46,17 +46,17 @@ The plugin can be initialized manually by calling `$('#field').priceformatl({..o
 ## Plugin Options
 The plugin can accept few options either via the constructor or html `data-*` attributes.
 
-*Default value* integer, default = `0`
-Specified either via **defaultValue** in plugin constructor or **value** attribute on the input field.
-Sets the initial value of the input. For example to set the initial value to `100.50`, specify the default value as 10050
+*Default value* integer, default = `0`<br>
+Specified either via **defaultValue** in plugin constructor or **value** attribute on the input field.<br>
+Sets the initial value of the input. For example to set the initial value to `100.50`, specify the default value as 10050<br>
 
-*Decimals Separator* char, default = `.`
-Specified either via **decimalSeparator** in plugin constructor or **data-decimal-separator** attribute on the input field.
-Sets the decimals separator character.
+*Decimals Separator* char, default = `.`<br>
+Specified either via **decimalSeparator** in plugin constructor or **data-decimal-separator** attribute on the input field.<br>
+Sets the decimals separator character.<br>
 
-*Thousands Separator* char, default = null
-Specified either via **thousandsSeparator** in the plugin constructor or **data-thousands-separator** attribute on the input field.
-Sets the thousands separator character, default to null means no character will be used.
+*Thousands Separator* char, default = null<br>
+Specified either via **thousandsSeparator** in the plugin constructor or **data-thousands-separator** attribute on the input field.<br>
+Sets the thousands separator character, default to null means no character will be used.<br>
 
 ## License
 The MIT License (MIT)
