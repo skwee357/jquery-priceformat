@@ -1,6 +1,6 @@
 {
     "name": "priceformat",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": "true",
     "description": "jQuery plugin to convert inputs into price inputs",
     "keywords": [

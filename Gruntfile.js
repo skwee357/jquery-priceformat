@@ -2,13 +2,16 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        jquery: grunt.file.readJSON('priceformat.jquery.json'),
+        bower: grunt.file.readJSON('bower.json'),
 
         bump: {
             options: {
                 files: ['package.json', 'priceformat.jquery.json', 'bower.json'],
-                updateConfigs: ['pkg'],
+                updateConfigs: ['pkg', 'jquery', 'bower'],
                 commit: true,
-                "commitMessage": "Release v%VERSION%",
+                commitMessage: "Release v%VERSION%",
+                commitFiles: ['-a'],
                 createTag: true,
                 tagName: '%VERSION%',
                 tagMessage: 'Release v%VERSION%',
