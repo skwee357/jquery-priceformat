@@ -4,9 +4,12 @@
         defaults = {
             defaultValue: 0,
             decimalSeparator: '.',
-            thousandsSeparator: null
+            thousandsSeparator: null,
+            allowSign: false,
+            displayPlusSign: false
         },
-        dataAttr = 'plugin_' + pluginName + '_price';
+        dataAttrPrice = 'plugin_' + pluginName + '_price',
+        dataAttrSign = 'plugin_' + pluginName + '_sign';
 
     function PriceFormat(element, options) {
         this.$el = $(element);
@@ -14,10 +17,23 @@
 
         var v = this.$el.val(),
             ds = this.$el.data('decimal-separator'),
-            ts = this.$el.data('thousands-separator');
+            ts = this.$el.data('thousands-separator'),
+            sign = '+';
 
-        if ((v.length > 0) && !isNaN(v)) {
-            this.options.defaultValue = parseInt(v);
+        if (v.length === 0) v = this.options.defaultValue;
+
+        if (v.toString().length > 0) {
+            sign = v.toString().charAt(0);
+            if ((sign === '-') || (sign === '+')) {
+                v = v.toString().substr(1); //remove sign
+                if (!options.allowSign) sign = '+';
+            } else {
+                sign = '+';
+            }
+
+            if (!isNaN(v)) {
+                this.options.defaultValue = parseInt(v);
+            }
         }
 
         if (ds !== undefined) {
@@ -28,19 +44,20 @@
             this.options.thousandsSeparator = ts;
         }
 
-        this.init();
+        this.init(sign);
     }
 
-    PriceFormat.prototype.init = function () {
+    PriceFormat.prototype.init = function (sign) {
         var self = this;
         this.$el
-            .data(dataAttr, self.options.defaultValue)
+            .data(dataAttrPrice, self.options.defaultValue)
+            .data(dataAttrSign, sign)
             .attr('unselectable', 'on')
             .css('user-select', 'none')
             .on('selectstart', false)
             .on('keydown', function (e) {
                 var $t = $(this),
-                    p = $t.data(dataAttr),
+                    p = $t.data(dataAttrPrice),
                     c = e.keyCode || e.which;
 
                 if ((c === 9) || (c === 13) || e.altKey || e.ctrlKey) { // tab, enter alt, or ctrl
@@ -52,18 +69,26 @@
                         p = parseInt(p / 10);
                     } else if ((c >= 48) && (c <= 57)) { // 0 - 9
                         p = p * 10 + (c - 48);
-                    } else if ((c >= 96) && (c <= 108)) { //num pad 0 - 9
+                    } else if ((c >= 96) && (c <= 105)) { //num pad 0 - 9
                         p = p * 10 + (c - 96);
                     } else {
+                        if (self.options.allowSign) {
+                            if ((c === 107) || (e.shiftKey && (c === 187))) { //plus sign
+                                $t.data(dataAttrSign, '+');
+                            } else if ((c === 189) || (c === 109)) { //minus sign
+                                $t.data(dataAttrSign, '-');
+                            }
+                        }
                         return;
                     }
 
-                    $t.data(dataAttr, p);
+                    $t.data(dataAttrPrice, p);
                 }
             })
             .on('keyup', function (e) {
                 var $t = $(this),
-                    p = ($t.data(dataAttr) / 100).toFixed(2);
+                    p = ($t.data(dataAttrPrice) / 100).toFixed(2),
+                    s = $t.data(dataAttrSign);
 
                 if (self.options.decimalSeparator !== '.') {
                     p = p.replace('.', self.options.decimalSeparator);
@@ -73,6 +98,11 @@
                     var parts = p.toString().split(self.options.decimalSeparator);
                     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, self.options.thousandsSeparator);
                     p = parts.join(self.options.decimalSeparator);
+                }
+
+                if (self.options.allowSign) {
+                    if (s === '-') p = '-' + p;
+                    else if (self.options.displayPlusSign) p = '+' + p;
                 }
 
                 $t.val(p);

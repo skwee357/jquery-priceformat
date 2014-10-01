@@ -2,6 +2,20 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        bump: {
+            options: {
+                files: ['package.json', 'priceformat.jquery.json', 'bower.json'],
+                updateConfigs: ['pkg'],
+                commit: false,
+                createTag: true,
+                tagName: '%VERSION%',
+                tagMessage: 'Release v%VERSION%',
+                push: true,
+                pushTo: 'origin'
+            }
+        },
+
         uglify: {
             options: {
                 banner: '/*! jquery.<%= pkg.name %>@<%= pkg.version %> by <%= pkg.author.name %> */\n',
@@ -11,13 +25,16 @@ module.exports = function (grunt) {
             },
             priceformat: {
                 files: {
-                    'jquery.priceformat.min.js': ['jquery.priceformat.js']
+                    'dist/jquery.priceformat.min.js': ['dist/jquery.priceformat.js']
                 }
             }
         }
     });
 
+    grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.registerTask('dist', ['uglify']);
 
+    grunt.registerTask('release:patch', ['bump-only:patch', 'uglify', 'bump-commit']);
+    grunt.registerTask('release:minor', ['bump-only:patch', 'uglify', 'bump-commit']);
+    grunt.registerTask('release:major', ['bump-only:patch', 'uglify', 'bump-commit']);
 };

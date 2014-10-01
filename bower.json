@@ -1,0 +1,13 @@
+{
+    "name": "jquery.priceformat",
+    "version": "0.1.1",
+    "main": "dist/jquery.priceformat.js",
+    "ignore": [
+        ".gitignore",
+        "Gruntfile.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "jquery": ">=1.9"
+    }
+}
