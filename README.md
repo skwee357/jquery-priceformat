@@ -49,7 +49,7 @@ More examples are available inside the `examples/` directory.
 `examples/signedunsinged.html` - signed and unsigned functionality
 
 ## Initializing
-The plugin can be initialized manually by calling `$('#field').priceformatl({..options..});` or by using `data-format="price"` on the field itself, for example:<br>
+The plugin can be initialized manually by calling `$('#field').priceformat({..options..});` or by using `data-format="price"` on the field itself, for example:<br>
 `<input type="text" data-format="price" />`
 
 ## Plugin Options
